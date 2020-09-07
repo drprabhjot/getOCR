@@ -1,0 +1,34 @@
+function getOCR(img_url,folderId,name,lang) {  
+  var allFiles = DriveApp.getFolderById(folderId).getFiles();                                                  //Setting parameters to find if the file is already present
+  var present = 0;
+  
+  Logger.log("Looking for " + name + " in folder "+ folderId);
+  while (allFiles.hasNext()) {
+    if (allFiles.next().getName() == name) {
+      present = 1;
+      Logger.log("File is present");                                                                          //Finding if the file is already present
+    }
+  }
+  
+  //If file is not present, creating the file  
+  if (present == 0) {
+    
+    try {
+      Logger.log("File could not be found so looking for data in url: " + img_url);
+      var blob = UrlFetchApp.fetch(img_url).getBlob();  
+      var resource = { title: name, mimeType: blob.getContentType(), parents: [{id: folderId}],};
+      var driveFile = Drive.Files.insert(resource, blob, {ocr: true, ocrLanguage: lang});
+    } catch (f) {Logger.log(f.toString());}
+  }  
+  
+  //Getting file id
+  var filefind = DriveApp.getFolderById(folderId).getFiles();
+  
+  while (filefind.hasNext())  {var source = filefind.next(); if (source.getName() == name) { var fileID = source.getId();}}  
+  
+  //Get the Google Doc data to Excel
+  
+  try { var body = DocumentApp.openById(fileID).getBody().getText();
+       return body;
+      } catch (f) {Logger.log(f.toString()); }
+}
