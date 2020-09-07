@@ -1,0 +1,30 @@
+//----- Getting COVID-19 data published by the Government of Cayman Islands on their website. --------------------------
+//----- The data is published once daily as a *.png image file.                               --------------------------
+
+function getCYMdata() {
+  var dest = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Carib');                                          //Setting destination Google sheet where I want the text to be
+  var output;
+  var url = "https://www.exploregov.ky/coronavirus-statistics";                                                      //Setting the URL of the main webpage from which the file url will be extracted
+  var fetchedUrl = UrlFetchApp.fetch(url, {muteHttpExceptions: true});                                               //Fetching the html code from the main webpage
+  if (fetchedUrl) {
+    var html = fetchedUrl.getContentText();
+   
+    var img_url = "img src="+ String.fromCharCode(34)+"(.*)alt";                                                     //Setting a filter to extract the name of the file
+    if (html.length && img_url.length) { output = html.match(new RegExp(img_url, 'i'))[1]; Logger.log(output);}
+  }
+  
+  var img_url_trim = output.slice(0, output.length-2);                                                              //Triming to get the exact url of the file intended to be read
+  Logger.log("URL of the file to be read is: " + img_url_trim);                                     
+  var date = new Date();                                                                                            //Getting today's date to create a unique name
+  var KYA_Date = Utilities.formatDate(date, "GMT-4","dd-MM-yy").toString();                                         //Formatting the date to a desired format, here its 31-12-20 format
+  
+  var name = "Cayman"+ KYA_Date;                                                                                    //Unique name of the file that will be saved in Google Drive folder
+  Logger.log("Name of the file in Google Drive will be: " + name);
+  
+  var folderId = "1DjstaESkTUasmp6R9nXn03ty";                                                                       //Specifying the name of the Google Drive Folder
+  var lang = "en";                                                                                                  //Specifying the language of the text to be read.
+  
+  var body = getOCR(img_url_trim,folderId,name, lang);                                                              //Reading the file with OCR
+  dest.getRange(2, 62, 1, 1).setValue(body);                                                                        //Printing the OCR data
+  dest.getRange(30, 62, 1, 1).setValue(img_url_trim);                                                               //Printing the Source
+}
