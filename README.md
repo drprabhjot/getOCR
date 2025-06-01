@@ -1,17 +1,40 @@
 # getOCR
-I use this to pull and read images, pdf and other files on a website with the Google OCR technology into text that I can use.
-The file is pulled from the url you provide, stored as a word document in your Google Drive in a specified folder of your choice.
-It is then read and returned as text in google script.
-Since I use it mulitple times in a day as part of webscraping, I have added the code for the name of the file to be searched for in the Google Drive before you pull data from the website. This decreases the amount of pulls on websites which could potentially block you from pulling data multiple times during a short period of time.
 
-<b>How to use it?</b>
-<ul>
-<li><strong>Step 1: </strong> In Google Script, go to Sources / Advanced Google Services and find "Drive API" and toggle to ON. If you change the name of "Drive" to anything else, remember to update the code accordingly.</li>
+### Repository Note
+**Please be aware that this repository appears to be incomplete.** The `getOCR_Code` and `Use Case Example` files, which are referenced in the instructions, are not currently included. This may affect your ability to directly follow all steps as described. You may need to create these scripts based on the project description or obtain them from an alternative source.
 
-<li><strong>Step 2: </strong>Paste the code from "getOCR_code" file into your google script.</li>
+This script leverages Google OCR technology to extract text from images, PDFs, and other files found on websites. The process involves:
+1. Fetching the file from a specified URL.
+2. Storing it as a Google Document in a designated Google Drive folder.
+3. Reading the document content and returning it as text within a Google Script.
 
-<li><strong>Step 3: </strong>Go to your Google Drive and ideally create a new folder for the files to be stored in. Get the address of the new folder you have created, usually that is the "1dTMIT-8haAWLZ1JF1_tAGtBHdULAQ" part of the url https://drive.google.com/drive/u/0/folders/1dTMIT-8haAWLZ1JF1_tAGtBHdULAQ that you see in your browser when you navigate to the folder.</li>
-<li><strong>Step 4: </strong>Get the URL of the file from the Website that you intend to read. Remember this is not the url of the webpage but the file on that webpage.</li>
-<li><strong>Step 5: </strong>Define the name that this file should be saved with in your Google Drive folder that you have created. Try to create something that is unique for each pull, like add date to the end of the filename if the file is published once a day or less frequently. This is very important as the code searches for that name and if the file with the name already exists, it will not fetch the new file from the web address that you have provided.</li>
-<li><strong>Step 6: </strong>See the "Use Case Example" for a sample code of how to return the body of the now transcribed file. </li>
-</ul>
+To optimize for frequent daily use, such as in web scraping, the script includes a feature to search Google Drive for an existing file by name before attempting to download it from the source URL. This minimizes redundant downloads and helps prevent potential IP blocks from websites due to excessive requests.
+
+### Dependencies
+*   A Google Script environment.
+*   The "Drive API" must be enabled in your Google Advanced Services. (This is also mentioned in Step 1 of the setup, but reiterated here for clarity).
+
+### Setup and Usage
+Follow these steps to configure and use the script:
+
+*   **Step 1:** Enable the Drive API.
+    *   In your Google Script project, navigate to "Services" (or "Resources" > "Advanced Google services" in the legacy editor).
+    *   Locate "Drive API" and toggle it to ON.
+    *   If you rename the "Drive" service in your script, ensure you update the code accordingly.
+
+*   **Step 2:** Add the OCR Script.
+    *   You will need to obtain or create the `getOCR_Code` script and paste it into your Google Script editor. This file is not currently included in this repository.
+
+*   **Step 3:** Prepare your Google Drive Folder.
+    *   It's recommended to create a new folder in your Google Drive to store the files processed by this script.
+    *   Obtain the Folder ID from the folder's URL. For example, if the URL is `https://drive.google.com/drive/u/0/folders/1dTMIT-8haAWLZ1JF1_tAGtBHdULAQ`, the Folder ID is `1dTMIT-8haAWLZ1JF1_tAGtBHdULAQ`.
+
+*   **Step 4:** Identify the File URL.
+    *   Get the direct URL of the file (e.g., image, PDF) you want to process from the source website. This is the URL of the file itself, not the webpage it's embedded on.
+
+*   **Step 5:** Define a Unique Filename.
+    *   Choose a name for how the file will be saved in your Google Drive folder.
+    *   **Crucially, ensure this filename is unique for each new file you process.** For instance, append the current date or a timestamp if files are published daily or less frequently. The script checks for this filename in Google Drive; if a file with the same name already exists, it will *not* fetch the new file from the provided URL.
+
+*   **Step 6:** Implement Your Use Case.
+    *   Refer to your `Use Case Example` script for a sample of how to retrieve and use the transcribed text. This file is not currently included in this repository, so you may need to create it based on the project's description.
