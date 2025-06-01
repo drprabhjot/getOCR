@@ -1,8 +1,5 @@
 # getOCR
 
-### Repository Note
-**Please be aware that this repository appears to be incomplete.** The `getOCR_Code` and `Use Case Example` files, which are referenced in the instructions, are not currently included. This may affect your ability to directly follow all steps as described. You may need to create these scripts based on the project description or obtain them from an alternative source.
-
 This script leverages Google OCR technology to extract text from images, PDFs, and other files found on websites. The process involves:
 1. Fetching the file from a specified URL.
 2. Storing it as a Google Document in a designated Google Drive folder.
